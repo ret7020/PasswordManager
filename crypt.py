@@ -1,8 +1,8 @@
 from twofish import Twofish
 
-def tfencrypt(infile, outfile, password):
+def tfencrypt(data: str, password: str) -> bytes:
     bs = 16 #block size 16 bytes or 128 bits
-    plaintext = infile.read()
+    plaintext = data
 
     if len(plaintext) % bs: #add padding 
 	    padded_plaintext = str(plaintext + '%' * (bs - len(plaintext) % bs)).encode('utf-8')
@@ -14,21 +14,29 @@ def tfencrypt(infile, outfile, password):
     for x in range(int(len(padded_plaintext) / bs)):
 	    ciphertext += T.encrypt(padded_plaintext[x * bs: ( x+ 1) * bs])
 
-    outfile.write(ciphertext)
+    return ciphertext
 
-def tfdecrypt(infile, outfile, password):
+def tfdecrypt(data_bin: bytes, password: str) -> bytes:
     bs = 16 #block size 16 bytes or 128 bits
-    ciphertext = infile.read()
+    ciphertext = data_bin
     T = Twofish(str.encode(password))
-    plaintext=b''
+    plaintext = b''
 
     for x in range(int(len(ciphertext) / bs)):
         plaintext += T.decrypt(ciphertext[x * bs: (x + 1) * bs])
 
-    outfile.write(str.encode(plaintext.decode('utf-8').strip('%')))
+    return str.encode(plaintext.decode('utf-8').strip('%'))
 
-
-# password = ')BCZvH9LE!^!X%4ZnMcRqc^Fj%4z!VL&'
+if __name__ == "__main__":
+    password = ')BCZvH9LE!^!X%4ZnMcRqc^Fj%4z!VL&'
+    crypted = tfencrypt("Test", password)
+    # print("First stage:", crypted)
+    # crypted = tfencrypt(crypted.decode("utf-8"), password)
+    # print("Second stage:", crypted)
+    # encrypted = tfdecrypt(crypted, password)
+    # print("First encrypt stage:", encrypted)
+    # encrypted = tfdecrypt(crypted, password)
+    # print("Second encrypt stage:", encrypted)
 
 # with open('infile.txt', 'r') as infile, open('outfile.txt', 'wb') as outfile:
 #     tfencrypt(infile, outfile, password)
