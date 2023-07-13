@@ -30,7 +30,8 @@ def tfdecrypt(data_bin: bytes, password: str) -> bytes:
 if __name__ == "__main__":
     password = ')BCZvH9LE!^!X%4ZnMcRqc^Fj%4z!VL&'
     crypted = tfencrypt("Test", password)
-    # print("First stage:", crypted)
+
+    print("First stage:", crypted)
     # crypted = tfencrypt(crypted.decode("utf-8"), password)
     # print("Second stage:", crypted)
     # encrypted = tfdecrypt(crypted, password)

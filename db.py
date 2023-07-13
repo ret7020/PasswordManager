@@ -3,7 +3,7 @@ import crypt
 import logging
 
 class DataBase:
-    def __init__(self, password: str, path: str):
+    def __init__(self, path: str):
         self.path = path
         self.password = password
         db_read = self.read_db()
@@ -31,4 +31,6 @@ class DataBase:
     def get_entry(self, entry_id: int):
         pass
         
-        
+
+if __name__ == "__main__":
+    db = DataBase()
